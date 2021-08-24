@@ -15,3 +15,8 @@ code/python/.ipynb_checkpoints/load_dataset-checkpoint.ipynb
 code/python/helpers/.ipynb_checkpoints/classifier_wlan_spectral_utils-checkpoint.py
 code/python/helpers/.ipynb_checkpoints/pre_processing_wlan_utils-checkpoint.py
 code/python/helpers/.ipynb_checkpoints/tr_models-checkpoint.py
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/tc_spectrum.iml
+.idea/vcs.xml
