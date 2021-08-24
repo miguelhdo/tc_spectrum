@@ -5,11 +5,11 @@ This repository contains the code the can be used to reproduce the results in th
 
 This repo will be updated according to the following planning:  
 
-##Python code
+## Python code
 - ~~Notebook with code showing how to load and partition the dataset for the training and testing the models~~ -> Done
 - Notebook with code showing how to train the CNN and RNN -> WIP
 - Notebook with code showing how to train a CNN and Gradient Boost based algorithm on the byte representation of the data.
 
-##Matlab code
+## Matlab code
 -Scripts to generate waveforms using L2 (bytes) payload. 
 
