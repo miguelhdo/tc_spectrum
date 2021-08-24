@@ -2,6 +2,7 @@
 This repository contains the code the can be used to reproduce the results in the paper: "A General Approach for Traffic Classification in Wireless Networks using Deep Learning".  
 - The dataset can be downladed from [https://zenodo.org/record/5208201](https://zenodo.org/record/5208201)
 - The preprint (paper still under review) can be found at [https://zenodo.org/record/5236573 ](https://zenodo.org/record/5236573) 
+- The last release of this code can be found at [![DOI](https://zenodo.org/badge/396962821.svg)](https://zenodo.org/badge/latestdoi/396962821)
 
 This repo will be updated according to the following planning:  
 
