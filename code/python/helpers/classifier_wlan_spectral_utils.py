@@ -280,7 +280,7 @@ def get_raw_xy_spectrum(dataset_folder, dataset_filename, num_samples=-1):
     return X, Y
 
 
-def get_raw_xy_packets(dataset_folder, dataset_filename, num_samples=-1):
+def get_raw_xy_bytes(dataset_folder, dataset_filename, num_samples=-1):
     path_to_dataset = dataset_folder + dataset_filename
     f = h5py.File(path_to_dataset, 'r')
     X_obj = f['X_payload']
@@ -309,8 +309,7 @@ def pad_or_trunc_x_and_scale(x_raw, num_iq_seq, padding, scale=False, padding_va
     for i in trange(num_samples):
         x_temp = np.array(x_raw[i], dtype=data_type)
         x_temp = x_temp.reshape((2, -1))
-        x_temp = pad_sequences(x_temp, maxlen=num_iq_seq, dtype=data_type, padding=padding, truncating=padding,
-                               value=padding_val)
+        x_temp = pad_sequences(x_temp, maxlen=num_iq_seq, dtype=data_type, padding=padding, truncating=padding, value=padding_val)
         if scale:
             x_temp = x_temp.reshape((-1, 1))
             x_temp = minmax_scale(x_temp, feature_range=scale_range, axis=0)
@@ -318,7 +317,7 @@ def pad_or_trunc_x_and_scale(x_raw, num_iq_seq, padding, scale=False, padding_va
         x_padded[i, :] = x_temp
     return x_padded
 
-def pad_or_trunc_x_and_scale_bytes(x_raw, num_iq_seq, scale=False, scale_range=(0, 1)):
+def pad_or_trunc_x_and_scale_bytes(x_raw, num_bytes_seq, padding, scale=False, padding_val=0, scale_range=(0, 1)):
     num_samples = len(x_raw)
     
     if scale:
@@ -326,17 +325,17 @@ def pad_or_trunc_x_and_scale_bytes(x_raw, num_iq_seq, scale=False, scale_range=(
     else:
         data_type = np.int16
         
-    x_padded = np.empty((num_samples, num_iq_seq), dtype=data_type)
+    x_padded = np.empty((num_samples, num_bytes_seq), dtype=data_type)
     
     for i in trange(num_samples):
         x_temp = np.array(x_raw[i], dtype=data_type)
-        x_temp = x_temp.reshape(1,-1)[0].copy()
-        x_temp.resize(num_iq_seq)
+        x_temp = x_temp.reshape(1,-1).copy()
+        x_temp = pad_sequences(x_temp, maxlen=num_bytes_seq, dtype=data_type, padding=padding, truncating=padding, value=padding_val)
         if scale:
             x_temp = minmax_scale(x_temp, feature_range=scale_range, axis=0)
         x_padded[i, :] = x_temp
     return x_padded
-
+      
 def get_one_hot_labels(Y, num_classes, label):
     Y = np.array(Y)
     Y = Y[:, label]
@@ -382,6 +381,15 @@ def get_xy(dataset_folder, dataset_filename, num_iq_seq, padding, label, num_cla
     print("Getting labels....DONE")
     return X, Y
 
+def get_max_length_L2_packet(Xraw_bytes):
+    max_length = 0
+    num_samples = len(Xraw_bytes)
+    for i in range(num_samples):
+        length_L2 = len(Xraw_bytes[i])
+        if max_length<length_L2:
+            max_length=length_L2
+    return max_length
+        
 def plot_confusion_matrix_mc(target_names,
                              cm_filename,
                              Y_true=[], 
