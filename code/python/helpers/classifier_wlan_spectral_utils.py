@@ -117,7 +117,7 @@ def create_and_train_model(model_type, task, num_iq_seq, num_classes, prefix, X_
     
     print("Model created")
 
-    print("Model start training")
+    print("Model starts training")
     history = model.fit(X_train, Y_train, validation_data = (X_val, Y_val), save=save, epochs = epochs, optimizer=optimizer, batch_size=batch_size, save_dir=save_dir)
 
     print("Training finished, Loading best model")
