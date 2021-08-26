@@ -86,19 +86,25 @@ def reshape_for_model_bype(model_type, X_train, X_val, X_test):
         print("No need of Re-shaping for Wavenet")
         return X_train, X_val, X_test
     
-def create_and_train_model(model_type, task, num_iq_seq, num_classes, prefix, X_train, Y_train, X_val, Y_val, X_test, Y_test, save=True, save_dir='./', ):
+def create_and_train_model_tc_spectrum(model_type, task, num_iq_seq, num_classes, prefix, X_train, Y_train, X_val, Y_val, X_test, Y_test, save=True, save_dir='./', optimizer = None, batch_size = None, max_epochs = None):
         
     print("Creating the model")
+    #Getting parameters used in the paper
+    params = get_params_model(model_type, task)
+    
+    #Load default general parameters from paper if they are not provided.
+    if optimizer == None:
+        optimizer = params['optimizer']
+    if batch_size == None:
+        batch_size = params['batch_size']
+    if max_epochs == None:
+        max_epochs = params['max_epochs']
+
     if model_type=='GRU':
         print("Model type GRU")
         
-        #Getting parameters
-        params = get_params_model(model_type, task)
         dropout= params['dropout']
         gru_units = params['gru_units']
-        optimizer = params['optimizer']
-        batch_size = params['batch_size']
-        epochs = params['max_epochs']
         
         #Setting up the model
         model = tr_models.GRUClassifier((2,num_iq_seq), num_classes, prefix=prefix, dropout=dropout, gru_units=gru_units)
@@ -109,16 +115,13 @@ def create_and_train_model(model_type, task, num_iq_seq, num_classes, prefix, X_
         dropout= params['dropout']
         kernel_size = params['kernel_size']
         num_filters = params['num_filters']
-        optimizer = params['optimizer']
-        batch_size = params['batch_size']
-        epochs = params['max_epochs']
     
         model = tr_models.CNNClassifier((2,num_iq_seq), num_classes, prefix=prefix, num_filters=num_filters, dropout=dropout, kernel_size=kernel_size)
     
     print("Model created")
 
     print("Model starts training")
-    history = model.fit(X_train, Y_train, validation_data = (X_val, Y_val), save=save, epochs = epochs, optimizer=optimizer, batch_size=batch_size, save_dir=save_dir)
+    history = model.fit(X_train, Y_train, validation_data = (X_val, Y_val), save=save, epochs = max_epochs, optimizer=optimizer, batch_size=batch_size, save_dir=save_dir)
 
     print("Training finished, Loading best model")
     model.set_best_trained_model()
@@ -135,9 +138,9 @@ def create_and_train_model(model_type, task, num_iq_seq, num_classes, prefix, X_
     model_evaluations['Test'] = model.evaluate(X_test, Y_test)
     
     print('Computing prediction time training')
-    start = time.clock() 
+    start = time.process_time() 
     model.predict(X_train)
-    end = time.clock()
+    end = time.process_time()
  
     pred_time_training = {}
     pred_time_training['n_samples']=len(X_train)
@@ -146,9 +149,9 @@ def create_and_train_model(model_type, task, num_iq_seq, num_classes, prefix, X_
     model_evaluations['prediction_time_training']=pred_time_training
     
     print('Computing prediction time test')
-    start = time.clock() 
+    start = time.process_time() 
     model.predict(X_test)
-    end = time.clock()
+    end = time.process_time()
 
     pred_time_test = {}
     pred_time_test['n_samples']= len(X_test)
@@ -171,7 +174,7 @@ def create_and_train_model(model_type, task, num_iq_seq, num_classes, prefix, X_
     
     return model_evaluations, model
 
-def create_and_train_model_byte(model_type, task, num_iq_seq, num_classes, prefix, X_train, Y_train, X_val, Y_val, X_test, Y_test, save=True, save_dir='./', ):
+def create_and_train_model_byte(model_type, task, num_iq_seq, num_classes, prefix, X_train, Y_train, X_val, Y_val, X_test, Y_test, save=True, save_dir='./', batch_size=0, epochs=0):
         
     print("Creating the model")
     if model_type=='GRU':
@@ -220,9 +223,9 @@ def create_and_train_model_byte(model_type, task, num_iq_seq, num_classes, prefi
     model_evaluations['Test'] = model.evaluate(X_test, Y_test)
     
     print('Computing prediction time training')
-    start = time.clock() 
+    start = time.process_time()
     model.predict(X_train)
-    end = time.clock()
+    end = time.process_time()
  
     pred_time_training = {}
     pred_time_training['n_samples']=len(X_train)
@@ -231,9 +234,9 @@ def create_and_train_model_byte(model_type, task, num_iq_seq, num_classes, prefi
     model_evaluations['prediction_time_training']=pred_time_training
     
     print('Computing prediction time test')
-    start = time.clock() 
+    start = time.process_time()
     model.predict(X_test)
-    end = time.clock()
+    end = time.process_time()
 
     pred_time_test = {}
     pred_time_test['n_samples']= len(X_test)
@@ -401,15 +404,6 @@ def plot_confusion_matrix_mc(target_names,
                              normalize=True, precision = "{:0.3f}"):
     if len(cm) == 0:
         cm = confusion_matrix(Y_true, Y_pred)
-        
-#def plot_confusion_matrix_mc(Y_true, Y_pred,
-#                             target_names,
-#                             cm_filename,
-#                             cm_dir='./',
-#                             title='Confusion matrix',
-#                             cmap=None,
-#                             normalize=True, precision = "{:0.2f}"):
-#    cm = confusion_matrix(Y_true, Y_pred)
 
     accuracy = np.trace(cm) / np.sum(cm).astype('float')
     misclass = 1 - accuracy

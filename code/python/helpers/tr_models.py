@@ -126,9 +126,6 @@ class CNNClassifier():
         # set callback functions
         if save:
             print('Model will be saved at ', self.save_dir)
-            # datetime object containing current date and time
-            #time_now = datetime.now()
-            #dt_string = time_now.strftime("%d%m%Y%H%M%S")
             file_prefix = self.prefix + "_classifier"
             saved = save_dir + file_prefix + ".h5"
             hist = save_dir + file_prefix + "_training_history.csv"
