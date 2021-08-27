@@ -467,6 +467,7 @@ class NumpyEncoder(json.JSONEncoder):
             return obj.tolist()
         return json.JSONEncoder.default(self, obj)
     
-def save_results_to_json(result_file_name, results):
+def save_results_to_json(prefix_result_file_name, results):
+    result_file_name = prefix_result_file_name+'.json'
     with open(result_file_name, 'w') as fp:
         json.dump(results, fp,indent=4, cls=NumpyEncoder)
