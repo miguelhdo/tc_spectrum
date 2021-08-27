@@ -23,3 +23,4 @@ code/python/helpers/.ipynb_checkpoints/tr_models-checkpoint.py
 *.csv
 *.h5
 code/python/.ipynb_checkpoints/training_testing-checkpoint.ipynb
+.idea/workspace.xml
