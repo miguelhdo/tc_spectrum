@@ -9,6 +9,7 @@ This repo will be updated according to the following planning:
 ## Python code  
 - ~~Notebook with code showing how to load and partition the dataset for the training and testing the models~~ -> Done
 - ~~Notebook with code showing how to train the CNN and RNN~~ -> Done
+- ~~Notebook with code showing how to test pretrained models and to get the metrics/results~~ -> Done
 - Notebook with code showing how to train a CNN and Gradient Boost based algorithm on the byte representation of the data.
 
 ## Matlab code
