@@ -3,7 +3,7 @@ This repository contains the code the can be used to reproduce the results in th
 - The dataset can be downladed from [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5208201.svg)](https://doi.org/10.5281/zenodo.5208201)
 - The preprint (paper still under review) can be found at [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5236573.svg)](https://doi.org/10.5281/zenodo.5236573)
 - The last release of this code can be found at [![DOI](https://zenodo.org/badge/396962821.svg)](https://zenodo.org/badge/latestdoi/396962821)
-- The published version of the paper can be found at [![DOI](https://doi.org/10.1109/TNSM.2021.3130382)
+- The published version of the paper can be found at [https://doi.org/10.1109/TNSM.2021.3130382](https://doi.org/10.1109/TNSM.2021.3130382)
 
 This repo will be updated according to the following planning:  
 
